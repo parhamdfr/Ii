@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تبریک سال نو</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #d8d3cb; /* تیره‌تر کردن پس‌زمینه */
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    #container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease;
+    }
+
+    .fade-out {
+      opacity: 0;
+    }
+
+    #envelope {
+      position: relative;
+      width: 200px;
+      height: 120px;
+      background-color: #c7bfa3;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .front-flap {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      top: 0;
+      left: 0;
+      background: #b2a98f;
+      transform-origin: bottom center;
+      z-index: 3;
+      transition: transform 1s ease-in-out;
+    }
+
+    .body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #c7bfa3;
+      z-index: 1;
+    }
+
+    #letter {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      width: 160px;
+      background: white;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 1s ease, transform 1s ease;
+      z-index: 2;
+    }
+
+    #envelope.open .front-flap {
+      transform: rotateX(180deg);
+    }
+
+    #envelope.open #letter {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-20px);
+      transition-delay: 0.5s;
+    }
+
+    #instruction {
+      position: absolute;
+      bottom: 40px;
+      width: 100%;
+      text-align: center;
+      color: #c7bfa3cc;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    #greetingScreen {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      background-color: #333; /* تیره‌تر کردن پس‌زمینه صفحه دوم */
+      color: #fff; /* رنگ متن سفید برای صفحه دوم */
+      font-size: 2rem; /* بزرگ‌تر کردن اندازه فونت */
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .fireworks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .firework-particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 1;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: scale(0.2);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+    }
+
+    /* فشفشه‌ها */
+    @keyframes fireworks-explosion {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    .firework {
+      position: absolute;
+      border-radius: 50%;
+      background-color: #fff;
+      opacity: 0;
+      animation: fireworks-explosion 1s ease-out infinite;
+      z-index: 10;
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="envelope" aria-label="نامه سال نو مبارک، کلیک کنید برای باز کردن">
+    <div class="body"></div>
+    <div class="front-flap"></div>
+    <div id="letter">سال نو مبارک!<br />از طرف پرهام ابراهیمی</div>
+  </div>
+  <div id="instruction">برای باز کردن نامه کلیک کنید</div>
+</div>
+
+<div id="greetingScreen" aria-live="polite" aria-hidden="true">
+  <header>سال نو مبارک</header>
+  <footer>از طرف پرهام ابراهیمی</footer>
+  <div class="fireworks"></div>
+</div>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const container = document.getElementById('container');
+  const greetingScreen = document.getElementById('greetingScreen');
+  const instruction = document.getElementById('instruction');
+  const fireworksContainer = greetingScreen.querySelector('.fireworks');
+
+  let opened = false;
+
+  envelope.addEventListener('click', () => {
+    if (opened) return;
+    opened = true;
+    instruction.style.opacity = '0';
+    envelope.classList.add('open');
+
+    setTimeout(() => {
+      container.classList.add('fade-out');
+    }, 1800);
+
+    setTimeout(() => {
+      container.style.display = 'none';
+      greetingScreen.style.display = 'flex';
+      greetingScreen.setAttribute('aria-hidden', 'false');
+      startFireworks();
+    }, 2800);
+  });
+
+  function createFirework(x, y) {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+    firework.style.left = `${x}px`;
+    firework.style.top = `${y}px`;
+
+    const particleCount = 25 + Math.floor(Math.random() * 25);
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('firework-particle');
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 40 + Math.random() * 40;
+      const size = 3 + Math.random() * 3;
+
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+
+      const colors = ['#ff5e5e', '#ff9f43', '#ffe66d', '#6de9a8', '#53e0ff', '#a76dff', '#ff67cc'];
+      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+      particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
+      particle.style.animation = `explode 700ms ease-out forwards`;
+      particle.style.animationDelay = `${i * 15}ms`;
+
+      firework.appendChild(particle);
+    }
+
+    fireworksContainer.appendChild(firework);
+
+    setTimeout(() => {
+      firework.remove();
+    }, 1200);
+  }
+
+  function launchRandomFirework() {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight * 0.5;
+    createFirework(x, y);
+  }
+
+  let fireworksInterval;
+  function startFireworks() {
+    launchRandomFirework();
+    fireworksInterval = setInterval(launchRandomFirework, 700);
+  }
+
+  function stopFireworks() {
+    clearInterval(fireworksInterval);
+  }
+</script>
+
+</body>
+</html>
