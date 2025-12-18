@@ -2,7 +2,9 @@
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تولدت مبارک مامان</title>
+
     <style>
         body {
             margin: 0;
@@ -11,39 +13,47 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: "Tahoma", sans-serif;
+            font-family: Tahoma, sans-serif;
             overflow: hidden;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         .card {
             background: white;
-            padding: 40px;
+            padding: 25px 20px;
             border-radius: 20px;
             text-align: center;
             box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            animation: fadeIn 2s;
+            animation: fadeIn 1.5s;
+            max-width: 400px;
+            width: 100%;
         }
 
         h1 {
             color: #e91e63;
-            font-size: 36px;
+            font-size: 1.6rem;
+            line-height: 1.4;
         }
 
         p {
-            font-size: 20px;
+            font-size: 1rem;
             color: #555;
-            margin: 20px 0;
+            margin: 15px 0;
+            line-height: 1.8;
         }
 
         button {
             background: #e91e63;
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 18px;
+            padding: 12px 20px;
+            font-size: 1rem;
             border-radius: 30px;
             cursor: pointer;
             transition: 0.3s;
+            width: 100%;
+            max-width: 220px;
         }
 
         button:hover {
@@ -54,12 +64,13 @@
         .heart {
             position: absolute;
             color: red;
-            font-size: 24px;
-            animation: float 4s linear infinite;
+            font-size: 20px;
+            animation: float linear infinite;
+            pointer-events: none;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.8); }
+            from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
 
@@ -80,8 +91,8 @@
     <div class="card">
         <h1>🎉 تولدت مبارک مامان عزیزم 🎉</h1>
         <p>
-            مامان مهربونم ❤️  
-            ممنونم که همیشه کنارمی  
+            مامان مهربونم ❤️<br>
+            ممنونم که همیشه کنارمی<br>
             دوستت دارم بی‌نهایت 🌹
         </p>
         <button onclick="showLove()">کلیک کن 💖</button>
@@ -89,7 +100,7 @@
 
     <script>
         function showLove() {
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 25; i++) {
                 let heart = document.createElement("div");
                 heart.className = "heart";
                 heart.innerHTML = "❤️";
@@ -99,7 +110,7 @@
 
                 setTimeout(() => {
                     heart.remove();
-                }, 4000);
+                }, 5000);
             }
         }
     </script>
